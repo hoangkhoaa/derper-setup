@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  derper:
+    image: fredliang/derper
+    restart: always
+    ports:
+      - "3478:3478/udp"
+      - "443:443"
+    environment:
+      - DERP_DOMAIN=dp.domain.com
+      - DERP_CERT_MODE=manual
+      - DERP_ADDR=:443
+    volumes:
+      - /etc/letsencrypt/live/dp.domain.com/fullchain.pem:/app/certs/dp.domain.com.crt:ro
+      - /etc/letsencrypt/live/dp.domain.com/privkey.pem:/app/certs/dp.domain.com.key:ro
+
+# Note:
+# - Do not install nginx or any other reverse proxy on this server.
+# - Ensure ports 443/tcp, 443/udp, and 3478/udp are open in your firewall for the DERP server to function properly.
+# - Replace 'dp.domain.com' with your actual domain name as needed.
